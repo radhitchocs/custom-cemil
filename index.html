@@ -1763,7 +1763,8 @@ function validasiNama() {
 }
 function kirimWA() {
   if (!validasiNama()) return;
-  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage())}`;
+  // Pakai api.whatsapp.com langsung: redirect dari wa.me merusak emoji (berubah jadi "�")
+  const url = `https://api.whatsapp.com/send?phone=${WA_NUMBER}&text=${encodeURIComponent(buildWhatsAppMessage())}`;
   konfeti();
   const a = document.createElement("a");
   a.href = url; a.target = "_blank"; a.rel = "noopener";
