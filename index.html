@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cumil – Custom Cemilan">
 <meta property="og:title" content="Cumil – Racik Snack Manis &amp; Asinmu Sendiri">
-<meta property="og:description" content="Pilih snack manis &amp; asin, mix sampai 4 jenis, isi pas satu kotak, pilih bumbu &amp; kemasan, lalu pesan lewat WhatsApp.">
+<meta property="og:description" content="Pilih snack manis &amp; asin, mix sampai 4 jenis, atur beratnya, pilih bumbu &amp; kemasan, lalu pesan lewat WhatsApp. Paket standar 250 g Rp15.000.">
 <meta property="og:url" content="https://customcemil.web.id/">
 <meta property="og:image" content="https://customcemil.web.id/og-image.jpg">
 <meta property="og:image:secure_url" content="https://customcemil.web.id/og-image.jpg">
@@ -553,7 +553,7 @@
     <canvas id="scene" aria-label="Kotak camilan 3D. Geser untuk memutar, cubit atau scroll untuk zoom." role="img"></canvas>
     <div class="stage-badge" aria-hidden="true">
       <span class="badge" id="badgeMode"><svg class="ico" aria-hidden="true" focusable="false"><use href="#ic-dinikmati"></use></svg>Siap Dinikmati</span>
-      <span class="badge" id="badgeTotal">220 g</span>
+      <span class="badge" id="badgeTotal">250 g</span>
     </div>
     <div class="hint" id="hint" hidden><svg class="ico" aria-hidden="true" focusable="false"><use href="#ic-tangan"></use></svg>Geser untuk memutar kotak</div>
     <div class="loading" id="loading" role="status">
@@ -597,13 +597,13 @@
         <div class="bumbu-row" id="bumbu-manis" role="group" aria-labelledby="lblBumbu-manis"></div>
         <div class="pedas" id="pedas-manis" aria-hidden="true" inert><div><div class="pedas-inner" role="group" aria-label="Level pedas snack manis"></div></div></div>
       </div>
-      <div class="gram-head"><label for="gram-manis">Berat snack manis</label><span class="gram-val" id="val-manis">110 g</span></div>
+      <div class="gram-head"><label for="gram-manis">Berat snack manis</label><span class="gram-val" id="val-manis">125 g</span></div>
       <div class="gram-row">
-        <button type="button" class="step" data-side="manis" data-delta="-10" aria-label="Kurangi 10 gram snack manis">−10</button>
-        <input type="range" id="gram-manis" aria-describedby="val-manis kap-manis">
-        <button type="button" class="step" data-side="manis" data-delta="10" aria-label="Tambah 10 gram snack manis">+10</button>
+        <button type="button" class="step" data-side="manis" data-delta="-25" aria-label="Kurangi 25 gram snack manis">−25</button>
+        <input type="range" id="gram-manis" aria-describedby="val-manis hint-manis">
+        <button type="button" class="step" data-side="manis" data-delta="25" aria-label="Tambah 25 gram snack manis">+25</button>
       </div>
-      <p class="gram-hint" id="kap-manis">Kotak penuh ± 110 g untuk pilihan ini</p>
+      <p class="gram-hint" id="hint-manis">Standar 125 g per sisi</p>
     </section>
 
     <section class="section gurih" aria-labelledby="hGurih">
@@ -619,29 +619,29 @@
         <div class="bumbu-row" id="bumbu-gurih" role="group" aria-labelledby="lblBumbu-gurih"></div>
         <div class="pedas" id="pedas-gurih" aria-hidden="true" inert><div><div class="pedas-inner" role="group" aria-label="Level pedas snack asin"></div></div></div>
       </div>
-      <div class="gram-head"><label for="gram-gurih">Berat snack asin</label><span class="gram-val" id="val-gurih">110 g</span></div>
+      <div class="gram-head"><label for="gram-gurih">Berat snack asin</label><span class="gram-val" id="val-gurih">125 g</span></div>
       <div class="gram-row">
-        <button type="button" class="step" data-side="gurih" data-delta="-10" aria-label="Kurangi 10 gram snack asin">−10</button>
-        <input type="range" id="gram-gurih" aria-describedby="val-gurih kap-gurih">
-        <button type="button" class="step" data-side="gurih" data-delta="10" aria-label="Tambah 10 gram snack asin">+10</button>
+        <button type="button" class="step" data-side="gurih" data-delta="-25" aria-label="Kurangi 25 gram snack asin">−25</button>
+        <input type="range" id="gram-gurih" aria-describedby="val-gurih hint-gurih">
+        <button type="button" class="step" data-side="gurih" data-delta="25" aria-label="Tambah 25 gram snack asin">+25</button>
       </div>
-      <p class="gram-hint" id="kap-gurih">Kotak penuh ± 110 g untuk pilihan ini</p>
+      <p class="gram-hint" id="hint-gurih">Standar 125 g per sisi</p>
     </section>
 
     <section class="section" aria-labelledby="hPreset">
       <h2 id="hPreset"><svg class="ico" aria-hidden="true" focusable="false"><use href="#ic-petir"></use></svg>Preset cepat</h2>
       <div class="presets" id="presets" role="group" aria-labelledby="hPreset"></div>
       <div class="fill" aria-live="polite">
-        <div class="fill-head"><span id="fillText">Isi kotak: 100%</span><span id="fillGram">220 / 220 g</span></div>
-        <div class="fill-bar" role="progressbar" id="fillBar" aria-label="Isi kotak" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><i class="fm" id="fillM"></i><i class="fg" id="fillG"></i></div>
+        <div class="fill-head"><span id="fillText">Isi kotak: 83%</span><span id="fillGram">250 / 300 g</span></div>
+        <div class="fill-bar" role="progressbar" id="fillBar" aria-label="Isi kotak" aria-valuemin="0" aria-valuemax="100" aria-valuenow="83"><i class="fm" id="fillM"></i><i class="fg" id="fillG"></i></div>
       </div>
     </section>
 
     <section class="section price-card" aria-labelledby="hHarga">
       <h2 id="hHarga" class="sr-only">Estimasi harga</h2>
       <div class="price-top">
-        <div><div class="breakdown">Estimasi harga</div><div class="price" id="price" aria-live="polite">Rp10.500</div></div>
-        <div class="breakdown" id="breakdown">Manis 110 g + Asin 110 g = 220 g</div>
+        <div><div class="breakdown">Estimasi harga</div><div class="price" id="price" aria-live="polite">Rp15.000</div></div>
+        <div class="breakdown" id="breakdown">Manis 125 g + Asin 125 g = 250 g</div>
       </div>
       <div class="disclaimer">Harga estimasi, final dikonfirmasi admin saat pre-order.</div>
       <div class="actions">
@@ -676,7 +676,7 @@
 </div>
 
 <div class="order-bar" id="orderBar">
-  <div><small>Estimasi</small><span class="p" id="barPrice">Rp10.500</span></div>
+  <div><small>Estimasi</small><span class="p" id="barPrice">Rp15.000</span></div>
   <button type="button" class="btn btn-wa" id="barWA" aria-label="Pesan via WhatsApp"><svg class="ico" aria-hidden="true" focusable="false"><use href="#ic-wa"></use></svg>Pesan</button>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -693,26 +693,26 @@
 const WA_NUMBER = "6283161310469";
 
 // Rumus harga: biayaKemasan + (total gram × hargaPerGram) + tambahan, lalu dibulatkan ke atas.
-// Contoh kotak penuh Kuping Gajah 110 g + Basreng Stik 110 g = 220 g → 3.000 + 220 × 34 = 10.480 → Rp10.500.
+// Paket standar 250 g (125 + 125) → 3.000 + 250 × 48 = Rp15.000
 const PRICING = {
   biayaKemasan: 3000,      // Rp per paket (kotak + plastik + stiker)
-  hargaPerGram: 34,        // Rp per gram camilan
+  hargaPerGram: 48,        // Rp per gram camilan
   tambahanSiapDibawa: 0,   // Rp tambahan untuk mode "Siap Dibawa" (default 0 = harga sama)
   kelipatanBulat: 500      // harga dibulatkan ke atas ke kelipatan ini
 };
 
-// Batas berat per sisi (gram). Batas maksimum dihitung dinamis dari kapasitas kotak, lihat kapasitas().
-const GRAM = { min: 30, step: 10 };
-const GRAM_MAKS_KERAS = 150;      // batas atas mutlak per sisi, berapa pun kapasitas hitungannya
-const MIN_GRAM_PER_JENIS = 10;    // tiap jenis minimal 10 g → minimum sisi = jumlah jenis × 10
+// Batas berat per sisi (gram), sama untuk semua camilan termasuk mix.
+// Saat mix, tiap jenis minimal 10 g: min 50 g sudah cukup untuk MAX_MIX = 4 (4 × 10 = 40 g).
+const GRAM = { min: 50, max: 150, step: 25, standar: 125 };
 const MAX_MIX = 4;                // maksimal jenis camilan per sisi saat Mix aktif
 
-// Preset cepat, relatif terhadap kapasitas tiap sisi (1 = kotak penuh). Dibulatkan ke GRAM.step.
+// Preset cepat (gram manis + gram gurih). Preset pertama = paket standar (aktif saat halaman dibuka).
 const PRESETS = [
-  { id: "penuh", label: "Penuh",       manis: 1,   gurih: 1 },
-  { id: "manis", label: "Lebih Manis", manis: 1,   gurih: 0.7 },
-  { id: "asin",  label: "Lebih Asin",  manis: 0.7, gurih: 1 },
-  { id: "hemat", label: "Hemat",       manis: 0.6, gurih: 0.6 }
+  { id: "standar", label: "Standar 250 g", manis: 125, gurih: 125 },
+  { id: "hemat",   label: "Hemat 150 g",   manis: 75,  gurih: 75 },
+  { id: "manis",   label: "Lebih Manis",   manis: 150, gurih: 100 },
+  { id: "asin",    label: "Lebih Asin",    manis: 100, gurih: 150 },
+  { id: "penuh",   label: "Penuh 300 g",   manis: 150, gurih: 150 }
 ];
 
 // Label sisi yang terlihat pengguna. Nilai kategori di kode tetap "manis" / "gurih".
@@ -723,26 +723,24 @@ const RASA_SISI = { manis: "manis", gurih: "asin" };
 // bentuk: bulatPipih | balokPipih | silinderKecil | hatiPipih | segitiga | stik | tabungLengkung
 //         cincin | bola | pilin | cakramBesar | kubus | bunga | gulungan
 // gramPerPotong dipakai untuk menghitung jumlah potongan 3D. hargaTambahPerGram opsional (Rp).
-// gramPenuh = perkiraan berat (g) yang memenuhi SATU sisi kotak (±470 ml) bila diisi camilan itu saja.
-//             Nilai awal masih perkiraan; ganti dengan hasil timbang asli.
 const SNACKS = [
-  { id: "pangpang",    nama: "Pangpang",              kategori: "manis", ikon: "ic-pangpang",    warna: "#E8B55E",                    bentuk: "bulatPipih",     gramPerPotong: 1.5, gramPenuh: 120, hargaTambahPerGram: 0 },
-  { id: "pluntir",     nama: "Pluntir Coklat",        kategori: "manis", ikon: "ic-pluntir",     warna: "#6B3A1E", warna2: "#E3B46C", bentuk: "pilin",          gramPerPotong: 2,   gramPenuh: 130, hargaTambahPerGram: 0 },
-  { id: "kuping",      nama: "Kuping Gajah",          kategori: "manis", ikon: "ic-kuping",      warna: "#D79A45", warna2: "#7A4420", bentuk: "hatiPipih",      gramPerPotong: 2.5, gramPenuh: 110, hargaTambahPerGram: 0 },
-  { id: "astor",       nama: "Astor",                 kategori: "manis", ikon: "ic-astor",       warna: "#D9A25A", warna2: "#6B3A1E", bentuk: "silinderKecil",  gramPerPotong: 1.5, gramPenuh: 80,  hargaTambahPerGram: 0 },
-  { id: "chococrunch", nama: "Choco Crunch",          kategori: "manis", ikon: "ic-chococrunch", warna: "#5C3317",                    bentuk: "bola",           gramPerPotong: 1,   gramPenuh: 100, hargaTambahPerGram: 0 },
-  { id: "momoroll",    nama: "Momo Roll",             kategori: "manis", ikon: "ic-momoroll",    warna: "#F2B2C0", warna2: "#FFF0DC", bentuk: "gulungan",       gramPerPotong: 1.5, gramPenuh: 90,  hargaTambahPerGram: 0 },
-  { id: "sale",        nama: "Sale Pisang",           kategori: "manis", ikon: "ic-salepisang",  warna: "#9A5424",                    bentuk: "balokPipih",     gramPerPotong: 2.5, gramPenuh: 150, hargaTambahPerGram: 0 },
-  { id: "cereal",      nama: "Cereal Ring",           kategori: "manis", ikon: "ic-cerealring",  warna: "#F2C04A", warna2: "#F28AA0", bentuk: "cincin",         gramPerPotong: 0.5, gramPenuh: 60,  hargaTambahPerGram: 0 },
-  { id: "seblakori",   nama: "Seblak Mix Ori",        kategori: "gurih", ikon: "ic-seblakori",   warna: "#E2552B", warna2: "#F2A03D", bentuk: "tabungLengkung", gramPerPotong: 1,   gramPenuh: 70,  hargaTambahPerGram: 0 },
-  { id: "rafael",      nama: "Kerupuk Seblak Rafael", kategori: "gurih", ikon: "ic-rafael",      warna: "#EE7A35",                    bentuk: "segitiga",       gramPerPotong: 1,   gramPenuh: 70,  hargaTambahPerGram: 0 },
-  { id: "asbes",       nama: "Asbes Jengkol",         kategori: "gurih", ikon: "ic-asbes",       warna: "#E8CF8F", warna2: "#E07A44", bentuk: "bulatPipih",     gramPerPotong: 1,   gramPenuh: 60,  hargaTambahPerGram: 0 },
-  { id: "kencur",      nama: "Kerupuk Kencur",        kategori: "gurih", ikon: "ic-kencur",      warna: "#F3E6C0",                    bentuk: "balokPipih",     gramPerPotong: 0.6, gramPenuh: 50,  hargaTambahPerGram: 0 },
-  { id: "beton",       nama: "Kerupuk Beton",         kategori: "gurih", ikon: "ic-beton",       warna: "#D9562B",                    bentuk: "silinderKecil",  gramPerPotong: 1.5, gramPenuh: 120, hargaTambahPerGram: 0 },
-  { id: "basreng",     nama: "Basreng Stik",          kategori: "gurih", ikon: "ic-basreng",     warna: "#D98B3A",                    bentuk: "stik",           gramPerPotong: 1.5, gramPenuh: 110, hargaTambahPerGram: 0 },
-  { id: "kemplang",    nama: "Kemplang Ikan",         kategori: "gurih", ikon: "ic-kemplang",    warna: "#EADBB8", warna2: "#C9A26E", bentuk: "cakramBesar",    gramPerPotong: 3,   gramPenuh: 70,  hargaTambahPerGram: 0 },
-  { id: "tongkol",     nama: "Kerupuk Tongkol",       kategori: "gurih", ikon: "ic-tongkol",     warna: "#F0C9A0",                    bentuk: "bunga",          gramPerPotong: 1,   gramPenuh: 70,  hargaTambahPerGram: 0 },
-  { id: "tahu",        nama: "Kerupuk Tahu Kotak",    kategori: "gurih", ikon: "ic-tahu",        warna: "#E9B44C",                    bentuk: "kubus",          gramPerPotong: 0.8, gramPenuh: 60,  hargaTambahPerGram: 0 }
+  { id: "pangpang",    nama: "Pangpang",              kategori: "manis", ikon: "ic-pangpang",    warna: "#E8B55E",                    bentuk: "bulatPipih",     gramPerPotong: 1.5, hargaTambahPerGram: 0 },
+  { id: "pluntir",     nama: "Pluntir Coklat",        kategori: "manis", ikon: "ic-pluntir",     warna: "#6B3A1E", warna2: "#E3B46C", bentuk: "pilin",          gramPerPotong: 2,   hargaTambahPerGram: 0 },
+  { id: "kuping",      nama: "Kuping Gajah",          kategori: "manis", ikon: "ic-kuping",      warna: "#D79A45", warna2: "#7A4420", bentuk: "hatiPipih",      gramPerPotong: 2.5, hargaTambahPerGram: 0 },
+  { id: "astor",       nama: "Astor",                 kategori: "manis", ikon: "ic-astor",       warna: "#D9A25A", warna2: "#6B3A1E", bentuk: "silinderKecil",  gramPerPotong: 1.5, hargaTambahPerGram: 0 },
+  { id: "chococrunch", nama: "Choco Crunch",          kategori: "manis", ikon: "ic-chococrunch", warna: "#5C3317",                    bentuk: "bola",           gramPerPotong: 1,   hargaTambahPerGram: 0 },
+  { id: "momoroll",    nama: "Momo Roll",             kategori: "manis", ikon: "ic-momoroll",    warna: "#F2B2C0", warna2: "#FFF0DC", bentuk: "gulungan",       gramPerPotong: 1.5, hargaTambahPerGram: 0 },
+  { id: "sale",        nama: "Sale Pisang",           kategori: "manis", ikon: "ic-salepisang",  warna: "#9A5424",                    bentuk: "balokPipih",     gramPerPotong: 2.5, hargaTambahPerGram: 0 },
+  { id: "cereal",      nama: "Cereal Ring",           kategori: "manis", ikon: "ic-cerealring",  warna: "#F2C04A", warna2: "#F28AA0", bentuk: "cincin",         gramPerPotong: 0.5, hargaTambahPerGram: 0 },
+  { id: "seblakori",   nama: "Seblak Mix Ori",        kategori: "gurih", ikon: "ic-seblakori",   warna: "#E2552B", warna2: "#F2A03D", bentuk: "tabungLengkung", gramPerPotong: 1,   hargaTambahPerGram: 0 },
+  { id: "rafael",      nama: "Kerupuk Seblak Rafael", kategori: "gurih", ikon: "ic-rafael",      warna: "#EE7A35",                    bentuk: "segitiga",       gramPerPotong: 1,   hargaTambahPerGram: 0 },
+  { id: "asbes",       nama: "Asbes Jengkol",         kategori: "gurih", ikon: "ic-asbes",       warna: "#E8CF8F", warna2: "#E07A44", bentuk: "bulatPipih",     gramPerPotong: 1,   hargaTambahPerGram: 0 },
+  { id: "kencur",      nama: "Kerupuk Kencur",        kategori: "gurih", ikon: "ic-kencur",      warna: "#F3E6C0",                    bentuk: "balokPipih",     gramPerPotong: 0.6, hargaTambahPerGram: 0 },
+  { id: "beton",       nama: "Kerupuk Beton",         kategori: "gurih", ikon: "ic-beton",       warna: "#D9562B",                    bentuk: "silinderKecil",  gramPerPotong: 1.5, hargaTambahPerGram: 0 },
+  { id: "basreng",     nama: "Basreng Stik",          kategori: "gurih", ikon: "ic-basreng",     warna: "#D98B3A",                    bentuk: "stik",           gramPerPotong: 1.5, hargaTambahPerGram: 0 },
+  { id: "kemplang",    nama: "Kemplang Ikan",         kategori: "gurih", ikon: "ic-kemplang",    warna: "#EADBB8", warna2: "#C9A26E", bentuk: "cakramBesar",    gramPerPotong: 3,   hargaTambahPerGram: 0 },
+  { id: "tongkol",     nama: "Kerupuk Tongkol",       kategori: "gurih", ikon: "ic-tongkol",     warna: "#F0C9A0",                    bentuk: "bunga",          gramPerPotong: 1,   hargaTambahPerGram: 0 },
+  { id: "tahu",        nama: "Kerupuk Tahu Kotak",    kategori: "gurih", ikon: "ic-tahu",        warna: "#E9B44C",                    bentuk: "kubus",          gramPerPotong: 0.8, hargaTambahPerGram: 0 }
 ];
 const DEFAULT_PILIHAN = { manis: "kuping", gurih: "basreng" };
 
@@ -804,24 +802,11 @@ function labelBumbu(side, pendek) {
 const rupiah = (n) => "Rp" + Math.round(n).toLocaleString("id-ID");
 const vibrate = (ms) => { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) {} };
 
-// Kapasitas satu sisi kotak untuk daftar id camilan (gram dibagi rata ke tiap jenis).
-//   max = k / Σ(1 / gramPenuh_i), dibulatkan ke BAWAH ke kelipatan GRAM.step, maks. GRAM_MAKS_KERAS
-//   min = GRAM.min, atau jumlah jenis × MIN_GRAM_PER_JENIS bila lebih besar
-function kapasitas(pilihan) {
-  const sel = pilihan.map(snackById), k = sel.length;
-  const penuh = k / sel.reduce((a, s) => a + 1 / s.gramPenuh, 0);
-  const min = Math.max(GRAM.min, k * MIN_GRAM_PER_JENIS);
-  const bulat = Math.floor(penuh / GRAM.step + 1e-9) * GRAM.step;   // +1e-9: cegah 110 → 100 karena galat pecahan
-  return { min, max: Math.max(min, Math.min(GRAM_MAKS_KERAS, bulat)) };
-}
-const kapasitasSisi = (side) => kapasitas(state[side].pilihan);
 const gramPerJenis = (side) => Math.round(state[side].gram / state[side].pilihan.length);
-const kotakPenuh = () => ["manis", "gurih"].every((side) => state[side].gram >= kapasitasSisi(side).max);
 
-// Keadaan awal satu sisi: camilan default, tanpa mix, kotak penuh
+// Keadaan awal satu sisi: camilan default, tanpa mix, berat standar
 function stateAwal(side) {
-  const pilihan = [DEFAULT_PILIHAN[side]];
-  return { pilihan, mix: false, gram: kapasitas(pilihan).max, bumbu: DEFAULT_BUMBU[side], pedas: DEFAULT_PEDAS };
+  return { pilihan: [DEFAULT_PILIHAN[side]], mix: false, gram: GRAM.standar, bumbu: DEFAULT_BUMBU[side], pedas: DEFAULT_PEDAS };
 }
 const state = { manis: stateAwal("manis"), gurih: stateAwal("gurih"), mode: "dinikmati" };
 
@@ -985,9 +970,9 @@ function createScene3D(canvas) {
     const hw = lerp(Wb, Wt, t) / 2 - 0.1, hd = lerp(Db, Dt, t) / 2 - 0.1;
     return side === "manis" ? { x0: -hw, x1: -0.08, z0: -hd, z1: hd } : { x0: 0.08, x1: hw, z0: -hd, z1: hd };
   }
-  // tinggi permukaan tumpukan = gram / kapasitas sisi; saat penuh, puncak tumpukan pas di bibir sekat
+  // tinggi permukaan tumpukan = gram / GRAM.max; 150 g → puncak tumpukan pas di bibir sekat
   function fillYFor(rasio) { return Math.max(0.2, (H - 0.08) * clamp(rasio, 0, 1)); }
-  const fillYSisi = (side) => fillYFor(state[side].gram / kapasitasSisi(side).max);
+  const fillYSisi = (side) => fillYFor(state[side].gram / GRAM.max);
 
   /* ----- Geometri low-poly tiap bentuk camilan ----- */
   function geomFor(bentuk) {
@@ -1673,23 +1658,11 @@ function popChip(b, ok) {
   b.classList.remove("pop", "nope"); void b.offsetWidth;
   b.classList.add(ok ? "pop" : "nope");
 }
-// Turunkan/naikkan gram agar tetap dalam batas kapasitas pilihan sekarang. Mengembalikan pesan toast bila berubah.
-function sesuaikanGram(side) {
-  const st = state[side], { min, max } = kapasitasSisi(side);
-  const g = clamp(st.gram, min, max);
-  if (g === st.gram) return "";
-  const pesan = g < st.gram ? `Disesuaikan ke kapasitas kotak: ${g} g` : `Minimal ${MIN_GRAM_PER_JENIS} g per jenis: ${g} g`;
-  st.gram = g;
-  return pesan;
-}
-// Dipanggil setiap kali daftar camilan satu sisi berubah
+// Dipanggil setiap kali daftar camilan satu sisi berubah (gram tidak ikut berubah)
 function setelahGantiPilihan(side) {
-  const pesan = sesuaikanGram(side);
   refreshChips(side); syncSlider(side);
   if (scene3d) scene3d.updatePile(side, "pop");
-  if (pesan) wasFull = kotakPenuh();   // penyesuaian otomatis tidak memicu perayaan "Kotak penuh!"
   updateSummary();
-  if (pesan) toast(pesan);
 }
 function pilihCamilan(side, id, btn) {
   const st = state[side];
@@ -1767,31 +1740,24 @@ function pilihPedas(side, n) {
 }
 
 function setGram(side, g, fromSlider) {
-  const { min, max } = kapasitasSisi(side);
-  g = clamp(Math.round(g / GRAM.step) * GRAM.step, min, max);
+  g = clamp(Math.round(g / GRAM.step) * GRAM.step, GRAM.min, GRAM.max);
   if (g === state[side].gram && !fromSlider) return;
   state[side].gram = g;
   syncSlider(side);
   if (scene3d) scene3d.updatePile(side, "drop");
   updateSummary();
 }
-// Slider, label gram, petunjuk kapasitas, dan catatan mix untuk satu sisi
+// Slider, label gram, petunjuk, dan catatan mix untuk satu sisi
 function syncSlider(side) {
-  const st = state[side], r = $("#gram-" + side), { min, max } = kapasitasSisi(side), k = st.pilihan.length;
-  r.min = min; r.max = max; r.step = GRAM.step;
+  const st = state[side], r = $("#gram-" + side);
   r.value = st.gram;
-  r.style.setProperty("--p", (max > min ? ((st.gram - min) / (max - min)) * 100 : 100) + "%");
+  r.style.setProperty("--p", ((st.gram - GRAM.min) / (GRAM.max - GRAM.min)) * 100 + "%");
   r.setAttribute("aria-valuetext", st.gram + " gram");
   $("#val-" + side).textContent = st.gram + " g";
-  $("#kap-" + side).textContent = `Kotak penuh ± ${max} g untuk pilihan ini` + (k > 1 ? ` · min ${min} g` : "");
+  $("#hint-" + side).textContent = `Standar ${GRAM.standar} g per sisi` + (st.mix ? ` · ±${gramPerJenis(side)} g per jenis` : "");
   $("#mixNote-" + side).textContent = st.mix ? `dibagi rata · ±${gramPerJenis(side)} g per jenis` : `campur 2–${MAX_MIX} jenis`;
 }
 
-// gram satu sisi untuk sebuah preset (relatif terhadap kapasitas, dibulatkan ke step, tidak di bawah minimum)
-function gramPreset(p, side) {
-  const { min, max } = kapasitasSisi(side);
-  return clamp(Math.round((max * p[side]) / GRAM.step) * GRAM.step, min, max);
-}
 function renderPresets() {
   const wrap = $("#presets");
   PRESETS.forEach((p) => {
@@ -1802,7 +1768,7 @@ function renderPresets() {
   });
 }
 function applyPreset(p) {
-  ["manis", "gurih"].forEach((side) => { state[side].gram = gramPreset(p, side); syncSlider(side); if (scene3d) scene3d.updatePile(side, "drop"); });
+  ["manis", "gurih"].forEach((side) => { state[side].gram = p[side]; syncSlider(side); if (scene3d) scene3d.updatePile(side, "drop"); });
   updateSummary();
 }
 
@@ -1834,7 +1800,7 @@ function updatePrice() {
 
 function updateSummary() {
   const m = state.manis.gram, g = state.gurih.gram, total = m + g;
-  const max = kapasitasSisi("manis").max + kapasitasSisi("gurih").max;   // kapasitas kotak untuk pilihan sekarang
+  const max = GRAM.max * 2;
   const pct = Math.round((total / max) * 100);
   $("#breakdown").textContent = `Manis ${m} g (${labelBumbu("manis", true)}) + Asin ${g} g (${labelBumbu("gurih", true)}) = ${total} g`;
   $("#fillText").textContent = `Isi kotak: ${pct}%`;
@@ -1845,10 +1811,10 @@ function updateSummary() {
   $("#badgeTotal").textContent = `${total} g`;
   document.querySelectorAll(".preset").forEach((b) => {
     const p = PRESETS.find((x) => x.id === b.dataset.id);
-    b.setAttribute("aria-pressed", String(gramPreset(p, "manis") === m && gramPreset(p, "gurih") === g));
+    b.setAttribute("aria-pressed", String(p.manis === m && p.gurih === g));
   });
   updatePrice();
-  if (total >= max && !wasFull) { wasFull = true; konfeti(); toast("Kotak penuh!", "ic-pesta"); }
+  if (total >= max && !wasFull) { wasFull = true; konfeti(); toast(`Isi maksimal ${max} g!`, "ic-pesta"); }
   if (total < max) wasFull = false;
 }
 
@@ -1874,7 +1840,7 @@ function acak() {
   });
   const p = PRESETS[Math.floor(Math.random() * PRESETS.length)];
   ["manis", "gurih"].forEach((side) => {
-    state[side].gram = gramPreset(p, side); syncSlider(side); refreshChips(side);
+    state[side].gram = p[side]; syncSlider(side); refreshChips(side);
     if (scene3d) scene3d.updatePile(side, "pop");
   });
   if (scene3d) scene3d.shake();
@@ -1890,9 +1856,8 @@ function resetStandar() {
     if (scene3d) scene3d.updatePile(side, "pop");
   });
   setMode("dinikmati");
-  wasFull = true;   // paket standar = kotak penuh; tidak perlu perayaan ulang
   updateSummary();
-  toast("Kembali ke Paket Standar (kotak penuh)");
+  toast(`Kembali ke Paket Standar ${GRAM.standar * 2} g`);
 }
 
 /* =====================================================================
@@ -2003,6 +1968,7 @@ function webglTersedia() {
 function initUI() {
   ["manis", "gurih"].forEach((side) => {
     const r = $("#gram-" + side);
+    r.min = GRAM.min; r.max = GRAM.max; r.step = GRAM.step;
     r.addEventListener("input", () => setGram(side, Number(r.value), true));
     $("#mix-" + side).addEventListener("change", (e) => setMix(side, e.target.checked));
     renderChips(side); renderBumbu(side); syncSlider(side);
@@ -2020,7 +1986,6 @@ function initUI() {
   $("#nama").addEventListener("input", () => { if ($("#nama").value.trim()) { $("#namaErr").hidden = true; $("#nama").setAttribute("aria-invalid", "false"); } });
   // interaksi apa pun di panel "membangunkan" animasi idle
   $("#panel").addEventListener("pointerdown", () => scene3d && scene3d.poke(), { passive: true });
-  wasFull = kotakPenuh();   // default sudah kotak penuh: jangan konfeti saat halaman dibuka
   updateSummary();
 }
 
