@@ -44,8 +44,11 @@ try {
     header.top,.panel,.order-bar,.stage-badge,.hint,.loading,#confetti,.toast{display:none !important}
     .app{display:block !important}
     .stage{position:fixed !important;inset:0 !important;height:auto !important;background:transparent !important;box-shadow:none !important;border-radius:0 !important}` });
-  // bumbu contoh supaya taburan terlihat
+  // isi & bumbu contoh: mix beberapa jenis supaya tumpukan berwarna-warni, taburan terlihat
   await p1.evaluate(() => {
+    state.manis.mix = true; state.manis.pilihan = ["kuping", "chococrunch", "cereal"];
+    state.gurih.mix = true; state.gurih.pilihan = ["basreng", "rafael", "kemplang"];
+    ["manis", "gurih"].forEach((side) => { state[side].gram = kapasitasSisi(side).max; setelahGantiPilihan(side); });
     state.manis.bumbu = "cokelat"; state.gurih.bumbu = "balado"; state.gurih.pedas = 2;
     scene3d.setBumbu("manis", true); scene3d.setBumbu("gurih", true); scene3d.redrawLabels();
   });
