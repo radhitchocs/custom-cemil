@@ -237,6 +237,14 @@
   .seg input:focus-visible+label{outline:3px solid var(--brown);outline-offset:2px}
   .btn-wa{width:100%;min-height:58px;font-size:18px;background:var(--wa);color:#fff;border-color:var(--wa-d);box-shadow:0 5px 0 var(--wa-d)}
   .btn-copy{width:100%;margin-top:10px}
+  .btn[disabled]{opacity:.65;cursor:wait;transform:none;filter:saturate(.7);box-shadow:0 2px 0 rgba(90,42,12,.22)}
+  .order-status{margin-top:10px;padding:10px 12px;border-radius:14px;font-weight:700;font-size:14px;line-height:1.35;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
+  .order-status[hidden]{display:none}
+  .order-status .ico{width:21px;height:21px;flex:none;margin-top:1px}
+  .order-status.loading{background:#FFF4D6;color:#744800;border:2px solid #E0B030}
+  .order-status.success{background:#E6F4E3;color:#245C2D;border:2px solid #7FB77E}
+  .order-status.error{background:#FDE7E4;color:#8A1C12;border:2px solid #E08A80}
+  .order-status .order-link{color:inherit;font-weight:800;text-decoration:underline;text-underline-offset:2px}
 
   /* Bar pesan bawah (HP) */
   .order-bar{
@@ -654,7 +662,7 @@
       <h2 id="hPesan"><svg class="ico" aria-hidden="true" focusable="false"><use href="#ic-wa"></use></svg>Pesan sekarang</h2>
       <div class="field">
         <label for="nama">Nama kamu <span aria-hidden="true">*</span></label>
-        <input type="text" id="nama" autocomplete="name" placeholder="Contoh: Radhit" required aria-describedby="namaErr">
+        <input type="text" id="nama" autocomplete="name" placeholder="Contoh: Radhit" required maxlength="80" aria-describedby="namaErr">
         <div class="err" id="namaErr" hidden>Nama wajib diisi dulu ya <svg class="ico" aria-hidden="true" focusable="false"><use href="#ic-hati"></use></svg></div>
       </div>
       <div class="field">
@@ -666,10 +674,11 @@
       </div>
       <div class="field">
         <label for="catatan">Catatan (opsional)</label>
-        <textarea id="catatan" placeholder="Contoh: basrengnya yang pedas ya"></textarea>
+        <textarea id="catatan" placeholder="Contoh: basrengnya yang pedas ya" maxlength="500"></textarea>
       </div>
       <button type="button" class="btn btn-wa" id="btnWA"><svg class="ico" aria-hidden="true" focusable="false"><use href="#ic-wa"></use></svg>Pesan via WhatsApp</button>
       <button type="button" class="btn btn-copy" id="btnCopy"><svg class="ico" aria-hidden="true" focusable="false"><use href="#ic-salin"></use></svg>Salin Pesanan</button>
+      <div class="order-status" id="pesanStatus" role="status" aria-live="polite" hidden></div>
     </section>
     <footer class="note">Cumil (Custom Cemil) · Pre-order via WhatsApp · Lingkungan kampus UPNVJT</footer>
   </main>
@@ -691,6 +700,13 @@
 
 // Nomor WhatsApp admin. GANTI dengan nomor asli: format 62xxxxxxxxxx (tanpa +, spasi, atau tanda -)
 const WA_NUMBER = "6283161310469";
+
+// URL Web App Google Apps Script untuk menyimpan pesanan ke Google Spreadsheet.
+// Tempel URL hasil deploy "Web app" di sini (diakhiri /exec). Contoh:
+// const ORDER_ENDPOINT = "https://script.google.com/macros/s/AKfycb.../exec";
+// Jangan pernah menaruh API key, token, atau kredensial Google di file ini.
+// Panduan setup lengkap: google-apps-script/PANDUAN.md
+const ORDER_ENDPOINT = "https://script.google.com/macros/s/AKfycbxzKF8qE60Re_3pUKryWOHgYYmS_X2iLTSvQuQT8EEzyVDaUjHdmfwgbg9r5hUlesFk/exec";
 
 // Rumus harga: biayaKemasan + (total gram × hargaPerGram) + tambahan, lalu dibulatkan ke atas.
 // Paket standar 250 g (125 + 125) → 3.000 + 250 × 48 = Rp15.000
@@ -1861,9 +1877,9 @@ function resetStandar() {
 }
 
 /* =====================================================================
-   6. PESAN WHATSAPP
+   6. PESAN WHATSAPP + SIMPAN KE GOOGLE SPREADSHEET
    ===================================================================== */
-function buildWhatsAppMessage() {
+function buildWhatsAppMessage(orderId) {
   const nama = $("#nama").value.trim();
   const ambil = (document.querySelector('input[name="ambil"]:checked') || {}).value || "Ambil sendiri";
   const catatan = $("#catatan").value.trim();
@@ -1873,6 +1889,7 @@ function buildWhatsAppMessage() {
   };
   return [
     "Halo Cumil! Saya mau pesan paket custom:",
+    ...(orderId ? [`🧾 ID Pesanan: ${orderId}`] : []),
     `🍬 ${NAMA_SISI.manis}: ${isi("manis")} – ${labelBumbu("manis")} ${state.manis.gram} g`,
     `🌶️ ${NAMA_SISI.gurih}: ${isi("gurih")} – ${labelBumbu("gurih")} ${state.gurih.gram} g`,
     `📦 Mode: ${state.mode === "dibawa" ? "Siap Dibawa" : "Siap Dinikmati"}`,
@@ -1891,18 +1908,209 @@ function validasiNama() {
   if (!ok) { $("#formPesan").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" }); setTimeout(() => el.focus({ preventScroll: true }), 350); vibrate(30); }
   return ok;
 }
-function kirimWA() {
-  if (!validasiNama()) return;
+
+/* ----- Simpan pesanan ke Google Spreadsheet (Google Apps Script Web App) ----- */
+let sedangKirim = false;
+let percobaanPesanan = null;   // { signature, payload, at } agar retry tidak membuat baris ganda
+let pesananTersimpan = null;   // { signature, orderId, at } untuk klik ulang pesanan yang sama
+
+function buatIdPesanan() {
+  const d = new Date();
+  const p = (n, l = 2) => String(n).padStart(l, "0");
+  const stamp = `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let kode = "";
+  const acak = new Uint32Array(6);
+  if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(acak);
+  else for (let i = 0; i < acak.length; i++) acak[i] = Math.floor(Math.random() * 4294967296);
+  for (let i = 0; i < acak.length; i++) kode += chars[acak[i] % chars.length];
+  return `CML-${stamp}-${kode}`;
+}
+
+function detailSisiPesanan(side) {
+  const b = bumbuById(state[side].bumbu);
+  return {
+    produk: state[side].pilihan.map((id) => snackById(id).nama),
+    mix: !!state[side].mix,
+    gram: state[side].gram,
+    bumbu: b.nama,
+    levelPedas: b.bisaPedas ? state[side].pedas : null
+  };
+}
+
+function buatPayloadPesanan() {
+  const manis = detailSisiPesanan("manis");
+  const gurih = detailSisiPesanan("gurih");
+  return {
+    orderId: buatIdPesanan(),
+    nama: $("#nama").value.trim(),
+    pengambilan: (document.querySelector('input[name="ambil"]:checked') || {}).value || "Ambil sendiri",
+    catatan: $("#catatan").value.trim(),
+    modeKemasan: state.mode === "dibawa" ? "Siap Dibawa" : "Siap Dinikmati",
+    manis,
+    gurih,
+    totalGram: manis.gram + gurih.gram,
+    estimasiHarga: hitungHarga()
+  };
+}
+
+function tandaTanganPesanan(p) {
+  return JSON.stringify({
+    nama: p.nama, pengambilan: p.pengambilan, catatan: p.catatan,
+    modeKemasan: p.modeKemasan, manis: p.manis, gurih: p.gurih,
+    totalGram: p.totalGram, estimasiHarga: p.estimasiHarga
+  });
+}
+
+function orderEndpoint() {
+  return String(ORDER_ENDPOINT || "").trim();
+}
+
+function endpointSiap() {
+  return /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec(?:[?#].*)?$/.test(orderEndpoint());
+}
+
+function urlWhatsApp(orderId) {
   // Pakai api.whatsapp.com langsung: redirect dari wa.me merusak emoji (berubah jadi "�")
-  const url = `https://api.whatsapp.com/send?phone=${WA_NUMBER}&text=${encodeURIComponent(buildWhatsAppMessage())}`;
-  konfeti();
+  return `https://api.whatsapp.com/send?phone=${WA_NUMBER}&text=${encodeURIComponent(buildWhatsAppMessage(orderId))}`;
+}
+
+function bukaTautanWA(url) {
   const a = document.createElement("a");
   a.href = url; a.target = "_blank"; a.rel = "noopener";
   document.body.appendChild(a); a.click(); a.remove();
 }
+
+function arahkanKeWhatsApp(win, url) {
+  if (win && !win.closed) {
+    try { win.location.replace(url); return; } catch (e) {}
+  }
+  bukaTautanWA(url);
+}
+
+function tampilStatusPesanan(pesan, tipe, tautan, labelTautan) {
+  const el = $("#pesanStatus");
+  if (!pesan) { el.hidden = true; el.className = "order-status"; el.textContent = ""; return; }
+  const ikonId = tipe === "error" ? "ic-hati" : tipe === "success" ? "ic-centang" : "ic-petir";
+  el.className = "order-status " + tipe;
+  el.innerHTML = ikon(ikonId) + '<span class="txt"></span>';
+  el.querySelector(".txt").textContent = pesan;
+  if (tautan) {
+    const a = document.createElement("a");
+    a.href = tautan; a.target = "_blank"; a.rel = "noopener";
+    a.className = "order-link"; a.textContent = labelTautan || "Buka WhatsApp";
+    el.appendChild(a);
+  }
+  el.hidden = false;
+}
+
+function setTombolPesanSibuk(sibuk) {
+  ["#btnWA", "#btnCopy", "#barWA"].forEach((sel) => {
+    const b = $(sel);
+    if (!b) return;
+    b.disabled = sibuk;
+    b.setAttribute("aria-busy", String(sibuk));
+  });
+}
+
+async function simpanPesananKeSpreadsheet(payload) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20000);
+  try {
+    const res = await fetch(orderEndpoint(), {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+      redirect: "follow",
+      signal: controller.signal
+    });
+    if (!res.ok) throw new Error(`Server membalas HTTP ${res.status}.`);
+    const teks = await res.text();
+    let data;
+    try { data = JSON.parse(teks); }
+    catch (e) { throw new Error("Respons server tidak valid. Pastikan URL Web App benar."); }
+    if (!data || data.ok !== true) throw new Error((data && data.error) || "Pesanan ditolak oleh server.");
+    if (data.orderId !== payload.orderId) throw new Error("ID pesanan dari server tidak cocok.");
+    return data;
+  } catch (err) {
+    if (err && err.name === "AbortError") throw new Error("Koneksi ke server terlalu lama. Coba lagi.");
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function kirimWA() {
+  if (sedangKirim) return;
+  if (!validasiNama()) return;
+
+  const payload = buatPayloadPesanan();
+  const signature = tandaTanganPesanan(payload);
+  const sekarang = Date.now();
+  const sudahTersimpan = pesananTersimpan &&
+    pesananTersimpan.signature === signature &&
+    sekarang - pesananTersimpan.at < 5 * 60 * 1000;
+
+  if (sudahTersimpan) {
+    payload.orderId = pesananTersimpan.orderId;
+    const url = urlWhatsApp(payload.orderId);
+    tampilStatusPesanan(`Pesanan ${payload.orderId} sudah tersimpan. Lanjutkan ke WhatsApp.`, "success", url);
+    konfeti();
+    toast("Pesanan sudah tersimpan", "ic-centang");
+    bukaTautanWA(url);
+    return;
+  }
+
+  if (!endpointSiap()) {
+    const url = urlWhatsApp(payload.orderId);
+    tampilStatusPesanan("Integrasi Google Spreadsheet belum dikonfigurasi, jadi pesanan TIDAK dicatat. Hubungi admin atau lanjut via WhatsApp.", "error", url, "Lanjut WhatsApp (tanpa dicatat)");
+    toast("Pesanan belum tercatat", "ic-hati");
+    return;
+  }
+
+  if (percobaanPesanan &&
+      percobaanPesanan.signature === signature &&
+      sekarang - percobaanPesanan.at < 5 * 60 * 1000) {
+    payload.orderId = percobaanPesanan.payload.orderId;
+  }
+
+  const url = urlWhatsApp(payload.orderId);
+  let waWin = null;
+  try { waWin = window.open("about:blank", "_blank"); } catch (e) {}
+
+  sedangKirim = true;
+  setTombolPesanSibuk(true);
+  tampilStatusPesanan("Menyimpan pesanan ke Google Spreadsheet…", "loading");
+  toast("Menyimpan pesanan…", "ic-petir");
+
+  try {
+    const hasil = await simpanPesananKeSpreadsheet(payload);
+    pesananTersimpan = { signature, orderId: hasil.orderId, at: Date.now() };
+    percobaanPesanan = null;
+    tampilStatusPesanan(`Pesanan ${hasil.orderId} tersimpan di spreadsheet. Lanjutkan ke WhatsApp.`, "success", url);
+    konfeti();
+    toast(hasil.duplicate ? "Pesanan sudah tersimpan" : "Pesanan tersimpan", "ic-centang");
+    arahkanKeWhatsApp(waWin, url);
+  } catch (err) {
+    if (waWin && !waWin.closed) waWin.close();
+    percobaanPesanan = { signature, payload, at: Date.now() };
+    console.warn("Gagal menyimpan pesanan:", err);
+    tampilStatusPesanan(`Pesanan belum tersimpan. ${err.message || "Coba lagi."} Data TIDAK tercatat di spreadsheet.`, "error", url, "Lanjut WhatsApp (tanpa dicatat)");
+    toast("Pesanan gagal disimpan", "ic-hati");
+  } finally {
+    sedangKirim = false;
+    setTombolPesanSibuk(false);
+  }
+}
 async function salinPesanan() {
   if (!validasiNama()) return;
-  const text = buildWhatsAppMessage();
+  const signature = tandaTanganPesanan(buatPayloadPesanan());
+  const idTersimpan = pesananTersimpan &&
+    pesananTersimpan.signature === signature &&
+    Date.now() - pesananTersimpan.at < 5 * 60 * 1000
+      ? pesananTersimpan.orderId
+      : undefined;
+  const text = buildWhatsAppMessage(idTersimpan);
   let ok = false;
   try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); ok = true; } } catch (e) {}
   if (!ok) {
